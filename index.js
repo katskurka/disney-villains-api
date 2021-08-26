@@ -1,15 +1,22 @@
 /* eslint-disable no-console */
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser')
-const villains = require('./villains')
+// const villains = require('./villains')
+// const { response } = require('express')
+const { getAllVillains, getVillainsBySlug, createNewVillain } = require('./controllers/villains')
+
+const app = express()
 
 app.use(bodyParser.json())
 
-app.get('/villains', (req, res) => {
-  const getVillain = villains.filter(villain => villain.name)
+app.get('/villains', getAllVillains)
 
-  return res.send(getVillain)
+app.get('/:slug', getVillainsBySlug)
+
+app.post('/', bodyParser.json(), createNewVillain)
+
+app.all('*', (request, response) => {
+  return response.status(404).send('Off with your head!')
 })
 
 app.listen(3002, () => {
