@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 
 app.get('/villains', getAllVillains)
 
-app.get('/:slug', getVillainsBySlug)
+app.get('/villains/:slug', getVillainsBySlug)
 
 app.post('/', bodyParser.json(), createNewVillain)
 
