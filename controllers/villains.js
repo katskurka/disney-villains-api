@@ -18,6 +18,12 @@ const createNewVillain = (request, response) => {
   if (!name || !movie || !slug) {
     return response.status(400).send('Fools! Enter all required fields!')
   }
+  
+  const newVillain = await models.villains.create({
+    name, movie, slug
+  })
+
+  return response.status(201).send(newVillain, 'createdAt', 'updatedAt')
 }
 
 module.exports = getAllVillains, getVillainsBySlug, createNewVillain
