@@ -3,7 +3,7 @@ CREATE DATABASE disney_villains;
 DROP USER IF EXISTS 'disneyVillains'@'localhost';
 CREATE USER 'disneyVillains'@'localhost' IDENTIFIED BY 'fOoL$!';
 
-GRANT ALL PRIVILEGES ON disneyVillians.* to 'disneyVillains'@'localhost';
+GRANT ALL PRIVILEGES ON disney_villains.* to 'disneyVillains'@'localhost';
 FLUSH PRIVILEGES;
 
 USE disney_villains;
