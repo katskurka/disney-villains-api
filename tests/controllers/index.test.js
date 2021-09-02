@@ -35,5 +35,19 @@ describe('Controllers - villains', () => {
     })
   })
 
-  describe('createNewVillain', () => {})
+  describe('createNewVillain', () => {
+    it('acceps new villain info and saves them to the db, returning the saved record with a 201 status', async () => {
+      const request = { body: oneVillain }
+      const stubbedSend = sinon.stub()
+      const stubbedStatus = sinon.stub().returns({ send: stubbedSend })
+      const response = { status: stubbedStatus }
+      const stubbedCreate = sinon.stub(models.villains, 'create').returns(oneVillain)
+
+      await createNewVillain(request, response)
+
+      expect(stubbedCreate).to.have.been.calledWith(oneVillain)
+      expect(stubbedStatus).to.have.been.calledWith(201)
+      expect(stubbedSend).to.have.been.calledWith(oneVillain)
+    })
+  })
 })
