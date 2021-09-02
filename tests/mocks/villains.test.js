@@ -1,4 +1,4 @@
-const everyVillain = [{
+const villainsList = [{
   name: 'Hades',
   movie: 'Hercules',
   slug: 'hades',
@@ -18,4 +18,4 @@ const oneVillain = {
   slug: 'maleficent',
 }
 
-module.exports = { everyVillain, oneVillain }
+module.exports = { villainsList, oneVillain }
