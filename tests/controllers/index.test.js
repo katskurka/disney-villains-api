@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-len
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
@@ -23,7 +24,16 @@ describe('Controllers - villains', () => {
     })
   })
 
-  describe('getVillainsBySlug', () => {})
+  describe('getVillainsBySlug', () => {
+    it('retrieves a villain associated with provided slug from db and calls response.send with it', async () => {
+      const request = { params: { slug: 'maleficent' } }
+      const stubbedSend = sinon.stub()
+      const response = { send: stubbedSend }
+      const stubbedFindOne = sinon.stub(models.villains, 'findOne').returns(oneVillain)
+
+      await getVillainsBySlug(request, response)
+    })
+  })
 
   describe('createNewVillain', () => {})
 })
