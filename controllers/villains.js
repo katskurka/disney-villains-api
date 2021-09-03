@@ -7,13 +7,17 @@ const getAllVillains = async (request, response) => {
 }
 
 const getVillainsBySlug = async (request, response) => {
-  const { slug } = request.params
+  try {
+    const { slug } = request.params
 
-  const getVillain = await models.villains.findOne({ where: { slug } })
+    const getVillain = await models.villains.findOne({ where: { slug } })
 
-  return getVillain
-    ? response.send(getVillain)
-    : response.sendStatus(404).send('only heroes remain')
+    return getVillain
+      ? response.send(getVillain)
+      : response.sendStatus(404).send('only heroes remain')
+  } catch (error) {
+    return response.status(500).send('Unable to find villain, try again later')
+  }
 }
 
 const createNewVillain = async (request, response) => {
@@ -27,7 +31,7 @@ const createNewVillain = async (request, response) => {
     name, movie, slug
   })
 
-  return response.status(201).send(newVillain, 'createdAt', 'updatedAt')
+  return response.status(201).send(newVillain)
 }
 
 module.exports = { getAllVillains, getVillainsBySlug, createNewVillain }

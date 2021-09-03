@@ -3,7 +3,7 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const models = require('../../models')
-const { before, afterEach, describe, it } = require('mocha')
+const { before, beforeEach, afterEach, describe, it } = require('mocha')
 const { getAllVillains, getVillainsBySlug, createNewVillain } = require('../../controllers/villains')
 const { villainsList, oneVillain } = require('../mocks/villains.test')
 
@@ -34,6 +34,10 @@ describe('Controllers - villains', () => {
       sendStatus: stubbedSendStatus,
       status: stubbedStatus
     }
+  })
+
+  beforeEach(() => {
+    stubbedStatus.returns({ send: stubbedStatusSend })
   })
 
   afterEach(() => {
@@ -71,13 +75,22 @@ describe('Controllers - villains', () => {
       expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'not-found' } })
       expect(stubbedSendStatus).to.have.been.calledWith(404)
     })
+
+    it('returns 500 with an error when db call throws an error', async () => {
+      stubbedFindOne.throws('Error!')
+      const request = { params: { slug: 'throw-error' } }
+
+      await getVillainsBySlug(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'throw-error' } })
+      expect(stubbedStatus).to.have.been.calledWith(500)
+      expect(stubbedStatusSend).to.have.been.calledWith('Unable to find villain, try again later')
+    })
   })
 
   describe('createNewVillain', () => {
     it('acceps new villain info and saves them to the db, returning the saved record with a 201 status', async () => {
       const request = { body: oneVillain }
-
-      stubbedStatus.returns({ send: stubbedStatusSend })
       const stubbedCreate = sinon.stub(models.villains, 'create').returns(oneVillain)
 
       await createNewVillain(request, response)
