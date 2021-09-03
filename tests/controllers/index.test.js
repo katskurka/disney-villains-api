@@ -11,6 +11,7 @@ chai.use(sinonChai)
 const { expect } = chai
 
 describe('Controllers - villains', () => {
+  let sandbox
   let stubbedFindOne
   let stubbedSend
   let response
@@ -19,12 +20,14 @@ describe('Controllers - villains', () => {
   let stubbedStatus
 
   before(() => {
-    stubbedFindOne = sinon.stub(models.villains, 'findOne')
+    sandbox = sinon.createSandbox()
 
-    stubbedSend = sinon.stub()
-    stubbedSendStatus = sinon.stub()
-    stubbedStatusSend = sinon.stub()
-    stubbedStatus = sinon.stub()
+    stubbedFindOne = sandbox.stub(models.villains, 'findOne')
+
+    stubbedSend = sandbox.stub()
+    stubbedSendStatus = sandbox.stub()
+    stubbedStatusSend = sandbox.stub()
+    stubbedStatus = sandbox.stub()
 
     response = {
       send: stubbedSend,
@@ -34,11 +37,7 @@ describe('Controllers - villains', () => {
   })
 
   afterEach(() => {
-    stubbedFindOne.resetBehavior()
-    stubbedSend.resetBehavior()
-    stubbedSendStatus.resetBehavior()
-    stubbedStatusSend.resetBehavior()
-    stubbedStatus.resetBehavior()
+    sandbox.reset
   })
 
   describe('getAllVillains', () => {
