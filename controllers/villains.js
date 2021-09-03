@@ -11,9 +11,9 @@ const getVillainsBySlug = async (request, response) => {
 
   const getVillain = await models.villains.findOne({ where: { slug } })
 
-  if (!getVillain) return response.status(404).send('only heroes remain')
-
-  return response.send(getVillain)
+  return getVillain
+    ? response.send(getVillain)
+    : response.sendStatus(404).send('only heroes remain')
 }
 
 const createNewVillain = async (request, response) => {
